@@ -11,6 +11,9 @@ $(function () {
 	var mainTpl = Handlebars.compile(main);
 	// var uid = $('li').data('id')
 
+	var head = $('#template-head').html();
+	var headTpl = Handlebars.compile(head);
+
 	function usersData (users) {
 		return $.get(baseUrl + '/users');
 	}
@@ -26,8 +29,8 @@ $(function () {
 		})
 	}
 
-	usersData()
-		.done(getPerms)
+	// usersData()
+	// 	.done(getPerms)
 
 		function renderMain (user, name) {
 
@@ -40,7 +43,11 @@ $(function () {
 
 		}
 
-		console.log(getPermissions.done());
+		function renderHead (name) {
+
+			return headTpl(name)
+
+		}
 
 	$('button').one('click', function () {
 
@@ -55,8 +62,17 @@ $(function () {
 
 	});
 
-	$('body').on('click', function () {
+	$('body').on('click', 'a', function () {
 
+		var uid = $(this).parents('li').data('id')
+		debugger;
+		console.log(uid)
+		usersData()
+		.done(getPerms)
+		.done(function (user) {
+			
+		})
+		debugger;
 		
 
 
