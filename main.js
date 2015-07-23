@@ -1,38 +1,12 @@
 
 
-var baseUrl = 'http://localhost:3000';
-var getUsers = $.get(baseUrl + '/users');
-var getPermissions = $.get(baseUrl + '/permissions');
-
-
 $(function () {
 
-	var main = $('#template-main').html();
-	var mainTpl = Handlebars.compile(main);
-	// var uid = $('li').data('id')
+var main = $('#template-main').html();
+var mainTpl = Handlebars.compile(main);
+var baseUrl = 'http://localhost:3000';
 
-	var head = $('#template-head').html();
-	var headTpl = Handlebars.compile(head);
-
-	function usersData (users) {
-		return $.get(baseUrl + '/users');
-	}
-
-	function getPerms (users) {
-		users.forEach(function (user) {
-			$.get(baseUrl + '/users/' + user.id + '/permissions')
-				.done(function (userPermissions) {
-					console.log(userPermissions)
-				}).fail(function (xhr) {
-					console.log('user ' + user.id + ' request failed', xhr.status)
-				})
-		})
-	}
-
-	// usersData()
-	// 	.done(getPerms)
-
-		function renderMain (user, name) {
+	function renderMain (user, name) {
 
 			var fields = {
 				userId: user,
@@ -43,42 +17,46 @@ $(function () {
 
 		}
 
-		function renderHead (name) {
 
-			return headTpl(name)
 
-		}
-
-	$('button').one('click', function () {
-
-		getUsers
-			.done(function (users) {
-				users.forEach(function (user) {
-
-					$('ul').append(renderMain(user.id, user.name));
-					
-				});
-			});
-
-	});
-
-	$('body').on('click', 'a', function () {
-
-		var uid = $(this).parents('li').data('id')
-		debugger;
-		console.log(uid)
-		usersData()
-		.done(getPerms)
-		.done(function (user) {
-			
-		})
-		debugger;
+	$('button').on('click', function () {
 		
-
-
+		$('.users').show()
+		$('.userperms').hide()
+		$.get(baseUrl + '/users')
+		 .done(function (users) {
+			users.forEach(function (user) {
+				$('.main').append(renderMain(user.id, user.name));
+				
+			});
+		});
 	})
 
+	$('ul').on('click', 'button', function() {
 
+		$('.users').hide()
+		$('.userperms').show()
+		var uid = $(this).parents('li').data('id')
+		var uname = $(this).parents('li').data('name')
+
+		$('.userperms').prepend('<h2>' + uname + ' permissions</h2>')
+		
+
+		$.get(baseUrl + '/users')
+		 .done(function (users) {
+			 	users.forEach(function (user) {
+			 		$.get(baseUrl + '/users/' + user.id +'/permissions')
+			 		 .done(function (perms) {
+			 		 	perms.forEach(function (perm) {
+			 		 		if (uid === perm.userId) {
+			 		 			$('.perms').append('<li>' + perm.permissions + '</li>')
+			 		 		}
+			 		 	})
+			 		 })
+			 	})
+		 })
+
+	})
 
 
 

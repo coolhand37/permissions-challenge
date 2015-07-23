@@ -3,33 +3,31 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<link src="index.css"></link>
 </head>
 <body>
 	<button>Get Users</button>
-
-	<div class="content">
-		<ul>
+	<div class="users">
+		<ul class="main">
 		
 		</ul>
 	</div>
+	
+	<div class="userperms">
+		<ul class="perms">
+			
+		</ul>
+	</div>
+
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="node_modules/handlebars/dist/handlebars.min.js"></script>
 	<script src="main.js"></script>
 	
 	<script id="template-main" type="text/x-handlebars-template">
 
-	<li data-id="{{userId}}">{{name}} - <a href="#">Get Permissions</a></li>
+	<li data-id="{{userId}}" data-name="{{name}}">{{name}} <button>Get Permissions</button></li>
 
 	</script>
-
-	<script id="template-head" type="text/x-handlebars-template">
-
-	<h1>{{name}} permissions</h1>
-
-	</script>
-
-	
-		
 	
 </body>
 </html>
